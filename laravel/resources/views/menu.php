@@ -1,5 +1,6 @@
 <ul>
-    <li><a href="./">Главная</a></li>
-    <li><a href="./project_info">О нашем новостном портале</a></li>
-    <li><a href="./news">Свежие новости</a></li>
+    <li><a href="<?=route('Home')?>">Главная</a></li>
+    <li><a href="<?=route('Category')?>">Разделы новостей</a></li>
+    <li><a href="<?=route('News')?>">Все Свежие новости</a></li>
 </ul>
+
