@@ -11,14 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
 
-Route::get('/news', function () {
-    return view('news');
-});
+Route::get('/', 'HomeController@index')->name('Home');
 
-Route::get('/project_info', function () {
-    return view('project_info');
-});
+Route::get('/news', 'NewsController@index')->name('News');
+
+Route::get('/news/{id}', 'NewsController@show')->name('NewsOne');
+
+Route::get('/category', 'CategoryController@index')->name('Category');
+
+Route::get('/category/{category_name}', 'NewsController@showNewsByCategory')->name('NewsCategory');
+
+
