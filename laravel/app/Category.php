@@ -7,9 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected static $categories = [
-        1 => 'politics',
-        2 => 'culture',
-        3 => 'sport'
+        1 => [
+            'id'=> 1,
+            'name'=> 'Политика',
+            'slug'=>'politics'
+            ],
+        2 => [
+            'id'=> 2,
+            'name'=> 'Культура',
+            'slug'=>'culture'
+        ],
+        3 => [
+            'id'=> 3,
+            'name'=> 'Спорт',
+            'slug'=>'sport'
+        ]
     ];
 
     protected static function getCategories()
@@ -19,16 +31,21 @@ class Category extends Model
 
     protected static function getCategoryById($id)
     {
-        return static::$categories[$id];
+        foreach (static::$categories as $category)
+            if ($category['id'] == $id)
+            {
+                return $category;
+            }
+
     }
 
-    protected static function getId($category_name)
+    protected static function getCategoryId($category_name)
     {
-        foreach (static::$categories as $key => $value)
+        foreach (static::$categories as $category)
         {
-            if($value == $category_name)
+            if($category['slug'] == $category_name)
             {
-                return $key;
+                return $category['id'];
             }
         }
     }
