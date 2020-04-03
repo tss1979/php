@@ -22,10 +22,7 @@ class NewsController extends Controller
             'category' => Category::getCategoryById($news['category_id'])]);
     }
 
-    protected function add()
-    {
-        return view('news.add');
-    }
+
 
     protected function showNewsByCategory($category_name) {
 
