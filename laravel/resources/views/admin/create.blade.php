@@ -21,14 +21,34 @@
                             <div class="form-group row">
                                 <label for="author_name" class="col-md-4 col-form-label text-md-right">Автор новости</label>
                                 <div class="col-md-6">
-                                    <input id="author_name" type="text">
+                                    <input id="author_name" name="author_name" type="text">
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="form-control" class="col-md-4 col-form-label text-md-right">Текст новости</label>
+                                <label for="newsCategory" class="col-md-4 col-form-label text-md-right">Категория новости</label>
+                                <div class="col-md-6">
+                                    <select id="newsCategory" class="form-control" name="category">
+                                        @forelse($categories as $category)
+                                            <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                                        @empty
+                                             <h2>Нет категорий</h2>
+                                        @endforelse
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="title" class="col-md-4 col-form-label text-md-right">Заголовок новости</label>
+                                <div class="col-md-6">
+                                    <input id="title" type="text" name="title">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="text" class="col-md-4 col-form-label text-md-right">Текст новости</label>
                                     <div class="col-md-6">
-                                     <textarea class="form-control" rows="3"></textarea>
+                                     <textarea id="text" class="form-control" rows="3" name="text"></textarea>
                                     </div>
                             </div>
 
