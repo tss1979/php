@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class News extends Model
@@ -11,33 +12,19 @@ class News extends Model
     
     public static function getNews()
     {
-        return json_decode(Storage::get('news.json'), true);
+        return DB::table('news')->get();
     }
 
     public static function getOneNews($id)
     {
-        foreach(static::getNews() as $item)
-        {
-            if ($item['id'] == $id)
-            {
-                return $item;
-            }
-        }
-
+        return DB::table('news')->find($id);
     }
 
     public static function getNewsByCategory($category_name)
     {
-        $newsCategory = [];
-        $category_id = Category::getCategoryId($category_name);
-        foreach (static::getNews() as $item)
-        {
-            if($item['category_id'] == $category_id){
-                array_push($newsCategory, $item);
-            }
-
-        }
-        return $newsCategory;
+         return DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->where('categories.slug', $category_name)->get();
     }
 
 
