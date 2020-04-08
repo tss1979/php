@@ -19,7 +19,8 @@ class NewsController extends Controller
 
         return view('news.one')->with([
             'news' => $news,
-            'category' => Category::getCategoryById($news['category_id'])]);
+            'category' => Category::getCategoryById($news->category_id)
+        ]);
     }
 
 

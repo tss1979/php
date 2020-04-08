@@ -14,9 +14,10 @@
             <div class="col-md-8">
                 <div class="card">
                      @forelse($newsAll as $news)
-                         <h4>{{ $news['title'] }}</h4>
-                         @if(!$news['isPrivate'])
-                            <a href ="{{ route('news.show', $news['id']) }}">Читать новость</a><br>
+                         <h4>{{ $news->title }}</h4>
+                    <div class="card_img" style="background-image: url({{ ($news->image) ? asset($news->image) : asset('storage/default.jpg') }})"></div>
+                         @if(!$news->isPrivate)
+                            <a href ="{{ route('news.show', $news->id) }}">Читать новость</a><br>
                          @else
                             Извините, новость доступна только для зарегистрированных пользователей
                          @endif

@@ -14,7 +14,9 @@
             <div class="col-md-8">
                 <div class="card">
                     @foreach($categoryAll as $category)
-                         <a href ="{{ route('news.category.show', $category['slug']) }}">{{ $category['name'] }}</a><br>
+                        <a class="cat-text" href ="{{ route('news.category.show', $category->slug) }}">
+                            <div class="card_img" style="background-image: url({{ asset($category->category_image) }}"></div>
+                            {{ $category->name }}</a><br>
                     @endforeach
                 </div>
             </div>

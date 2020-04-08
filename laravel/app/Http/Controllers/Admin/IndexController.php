@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
@@ -19,18 +20,23 @@ class IndexController extends Controller
     {
         if($request->isMethod('post'))
         {
-            $news = News::getNews();
-            $key = count($news) + 1;
-            array_push($news, [
-                'id' => $key,
-                'title' => $request->input('title', null),
-                'text'=> $request->input('text', null),
-                'category_id' => $request->input('category', null),
-                'isPrivate' => ($request->input('isPrivate', null) == 'on') ? true : false,
+            $url = null;
+            if($request->file('image')){
+                $path = Storage::putFile('public/images', $request->file('image'));
+                $url = Storage::url($path);
+            }
+
+            DB::table('news')->insert([
+                'title' => $request->title,
+                'text'=> $request->text,
+                'isPrivate' => isset($request->isPrivate),
+                'image'=> $url,
+                'category_id' => $request->category
             ]);
-            Storage::disk('local')->put('news.json', json_encode($news));
+
             return redirect()->route('news.index');
         }
+
         return view('admin.create', [
             'categories' => Category::getCategories()
         ]);

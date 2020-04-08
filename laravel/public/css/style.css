@@ -1,0 +1,17 @@
+.card_img {
+    height: 100px;
+    width: 50%;
+    background-position: center;
+    background-size: cover;
+}
+
+.cat-text{
+    font-size: 25px;
+    color: gray;
+    text-decoration: none;
+}
+
+.cat-text:hover {
+    color: red;
+    text-decoration: none;
+}
