@@ -4,19 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\News;
 
 class Category extends Model
 {
 
 
-    protected static function getCategories()
-    {
-        return DB::table('categories')->get();
-    }
+    protected $fillable =['name', 'slug'];
 
-    protected static function getCategoryById($id)
+    public function news()
     {
-        return DB::table('categories')->find($id);
+        return $this->hasMany(News::class, 'category_id');
     }
 
 }

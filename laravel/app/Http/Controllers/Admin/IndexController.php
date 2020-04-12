@@ -16,30 +16,6 @@ class IndexController extends Controller
         return view('admin.index');
     }
 
-    protected function create(Request $request)
-    {
-        if($request->isMethod('post'))
-        {
-            $url = null;
-            if($request->file('image')){
-                $path = Storage::putFile('public/images', $request->file('image'));
-                $url = Storage::url($path);
-            }
 
-            DB::table('news')->insert([
-                'title' => $request->title,
-                'text'=> $request->text,
-                'isPrivate' => isset($request->isPrivate),
-                'image'=> $url,
-                'category_id' => $request->category
-            ]);
-
-            return redirect()->route('news.index');
-        }
-
-        return view('admin.create', [
-            'categories' => Category::getCategories()
-        ]);
-    }
 
 }
