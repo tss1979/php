@@ -16,12 +16,11 @@ class CategoriesSeeder extends Seeder
 
     public function getData()
     {
-        $faker = Faker\Factory::create('ru_RU');
         $data =[];
         for($i = 0; $i<= 3; $i++)
         {
             $data[] = [
-                'name' => $faker->realText(rand(12, 14)),
+                'name' => $this->getName($i),
                 'slug' => $this->getSlug($i),
                 'category_image'=> $this->getImage($i)
             ];
@@ -55,6 +54,20 @@ class CategoriesSeeder extends Seeder
                 return "storage/politics.jpg";
             case 3:
                 return "storage/weather.jpg";
+        }
+    }
+
+    public function getName($i)
+    {
+        switch ($i) {
+            case 0:
+                return "Спорт";
+            case 1:
+                return "Культура";
+            case 2:
+                return "Политика";
+            case 3:
+                return "Погода";
         }
     }
 }

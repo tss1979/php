@@ -9,6 +9,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return view('category')->with('categoryAll', Category::getCategories());
+        return view('category')->with('categoryAll', Category::query()->get());
     }
+
+
 }
