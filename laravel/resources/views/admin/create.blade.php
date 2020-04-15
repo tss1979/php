@@ -5,7 +5,7 @@
 @endsection
 
 @section('menu')
-    @include('menu')
+    @include('admin.menu')
 @endsection
 
 @section('content')
@@ -24,36 +24,73 @@
                             <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">Заголовок новости</label>
                                 <div class="col-md-6">
-                                    <input id="title" type="text" name="title" value="{{ $news->title ?? old('title') }}">
+                                    <input class="@if ($errors->has('title')) is-invalid @else is-valid @endif"
+                                           id="title" type="text" name="title" value="{{ $news->title ?? old('title') }}">
                                 </div>
+                                    @if ($errors->has('title'))
+                                        <div class="col-md-6 offset-md-4" >
+                                            <small id="passwordHelp" class="text-danger">
+                                                @foreach ($errors->get('title') as $error)
+                                                    {{ $error }}
+                                                @endforeach
+                                            </small>
+                                        </div>
+                                    @endif
                             </div>
 
                             <div class="form-group row">
                                 <label for="newsCategory" class="col-md-4 col-form-label text-md-right">Категория новости</label>
                                 <div class="col-md-6">
-                                    <select id="newsCategory" class="form-control" name="category_id">
+                                    <select id="newsCategory" class="form-control @if ($errors->has('category_id')) is-invalid @else is-valid @endif" name="category_id">
                                         @forelse($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @empty
                                             <h2>Нет категорий</h2>
                                         @endforelse
                                     </select>
+                                    @if ($errors->has('category_id'))
+                                        <div class="col-md-6 offset-md-4" >
+                                            <small id="passwordHelp" class="text-danger">
+                                                @foreach ($errors->get('category_id') as $error)
+                                                    {{ $error }}
+                                                @endforeach
+                                            </small>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="text" class="col-md-4 col-form-label text-md-right">Текст новости</label>
                                     <div class="col-md-6">
-                                     <textarea id="text" class="form-control" rows="3" name="text">
+                                     <textarea id="text" class="form-control @if ($errors->has('text')) is-invalid @else is-valid @endif" rows="3" name="text">
                                          {{ $news->text ?? old('text') }}
                                      </textarea>
                                     </div>
+                                @if ($errors->has('text'))
+                                    <div class="col-md-6 offset-md-4" >
+                                        <small id="passwordHelp" class="text-danger">
+                                            @foreach ($errors->get('text') as $error)
+                                                {{ $error }}
+                                            @endforeach
+                                        </small>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-md-6 offset-md-4">
-                                    <input type="file" class="custom-file-input" id="customFile" name="image">
+                                    <input type="file" class="custom-file-input @if ($errors->has('text')) is-invalid @else is-valid @endif" id="customFile" name="image">
                                     <label class="custom-file-label" for="image">Добавить картинку</label>
+                                    @if ($errors->has('image'))
+                                        <div class="col-md-6 offset-md-4" >
+                                            <small id="passwordHelp" class="text-danger">
+                                                @foreach ($errors->get('image') as $error)
+                                                    {{ $error }}
+                                                @endforeach
+                                            </small>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -62,18 +99,27 @@
                                     <div class="form-check">
 
                                         <input @if ($news->isPrivate == 1 || old('isPrivate') == 1) checked  @endif
-                                        class="form-check-input" type="checkbox" value="1" name="isPrivate">
+                                        class="form-check-input @if ($errors->has('text')) is-invalid @else is-valid @endif"
+                                               type="checkbox" value="1" name="isPrivate">
 
                                         <label class="form-check-label" for="isPrivate">
                                             Только для зарегистрированных пользователей
                                         </label>
-
+                                        @if ($errors->has('text'))
+                                            <div class="col-md-6 offset-md-4" >
+                                                <small id="passwordHelp" class="text-danger">
+                                                    @foreach ($errors->get('isPrivate') as $error)
+                                                        {{ $error }}
+                                                    @endforeach
+                                                </small>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">
-                                @if ($news->id) Изменить @else Добавить @endif
+                            <button type="submit" class="btn btn-primary" name="add">
+                                @if($news->id)Изменить@elseДобавить@endif
                             </button>
                         </form>
 

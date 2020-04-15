@@ -20,7 +20,16 @@ Route::group([
     Route::get('/edit/{news}', 'NewsController@edit')->name('edit');
     Route::post('/update/{news}', 'NewsController@update')->name('update');
     Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
+    Route::group([
+        'as'=> 'category.'
+    ], function () {
+        Route::get('/category', 'CategoryController@index')->name('index');
+        Route::match(['get', 'post'],'/category/create', 'CategoryController@create')->name('create');
+        Route::get('/category/edit/{category}', 'CategoryController@edit')->name('edit');
+        Route::post('/category/change/{category}', 'CategoryController@change')->name('change');
+        Route::get('/category/destroy/{category}', 'CategoryController@destroy')->name('destroy');
     });
+});
 
 Route::group([
     'prefix' => 'news',

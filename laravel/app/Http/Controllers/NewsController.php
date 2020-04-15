@@ -33,7 +33,7 @@ class NewsController extends Controller
     {
         $category = Category::query()->where('slug', $category_name)->get();
         $news = News::query()->where('category_id', $category[0]->id)->paginate(3);
-
+        //$news = $category->news()->get();
         return view('news.index', ['newsAll' => $news]);
        // return view('news.index')->with('newsAll', $category->news());
     }

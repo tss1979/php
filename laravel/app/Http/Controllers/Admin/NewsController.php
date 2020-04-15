@@ -32,7 +32,9 @@ class NewsController extends Controller
         {
             $url = null;
 
-            $news->fill($request->all());
+            $data = $this->validate($request, News::rules(),[], News::attributeNames());
+            
+            $news->fill($data);
 
 
             if($request->file('image')){
@@ -41,9 +43,16 @@ class NewsController extends Controller
                 $news->image = $url;
             }
 
-            $news->save();
+            $result = $news->save();
 
-            return redirect()->route('admin.index');
+            if($result)
+            {
+                return redirect()->route('admin.index');
+            } else {
+                $request ->flash();
+                return redirect()->route('admin.create');
+            }
+
         }
 
         return view('admin.create', [
