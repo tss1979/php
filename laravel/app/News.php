@@ -17,5 +17,23 @@ class News extends Model
        return $this->belongsTo(Category::class, 'category_id')->first();
    }
 
+    public static function attributeNames() {
+        return [
+            'title' => 'Заголовок новости',
+            'text' => 'Текст новости',
+            'category_id' => "Категория новости",
+            'image' => "Изображение"
+        ];
+    }
 
+    public static function rules() {
+        $tableNameCategory = (new Category())->getTable();
+        return [
+            'title' => 'required|max:20|unique:news,title',
+            'text' => 'required|min:5',
+            'category_id' => "required|exists:{$tableNameCategory},id",
+            'image' => 'mimes:jpeg,bmp,png|max:1000',
+            'isPrivate' => 'boolean'
+        ];
+    }
 }
