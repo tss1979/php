@@ -39,18 +39,21 @@ class User extends Authenticatable
 
     public static function attributeNames() {
         return [
-            'name' => 'Имя пользователя',
-            'password' => 'Пароль',
-            'email' => "Электронная почта"
+            'name' => 'Имя',
+            'email' => 'Адрес электронной почты',
+            'password' => "Пароль",
         ];
     }
 
     public static function rules() {
         return [
-            'name' => 'required|max:20|unique:users,name',
-            'password' => 'required|confirmed|min:6|max:12',
-            'email' => 'required|email'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
+            'newPassword' => ['required', 'string', 'min:3', 'confirmed'],
 
         ];
     }
+
+
 }

@@ -13,13 +13,23 @@
 Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin',
-    'as' => 'admin.'
+    'as' => 'admin.',
+    'middleware' => ['auth', 'is_admin']
 ], function () {
     Route::get('/', 'NewsController@index')->name('index');
     Route::match(['get', 'post'],'/create', 'NewsController@create')->name('create');
     Route::get('/edit/{news}', 'NewsController@edit')->name('edit');
-    Route::post('/update/{news}', 'NewsController@update')->name('update');
+    Route::post('/store/{news}', 'NewsController@store')->name('store');
     Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
+    Route::group([
+        'as'=> 'profile.'
+    ], function () {
+        Route::get('/users', 'ProfileController@index')->name('index');
+        Route::get('/profile/change/{user}', 'ProfileController@change_admin_status')->name('change_admin_status');
+        Route::get('/edit', 'ProfileController@edit')->name('edit');
+        Route::match(['get','post'], '/update', 'ProfileController@update')->name('update');
+
+    });
     Route::group([
         'as'=> 'category.'
     ], function () {
@@ -45,7 +55,18 @@ Route::group([
     });
 });
 
-Route::get('/', 'HomeController@index')->name('Home');
+Route::group([
+    'prefix' => 'user',
+    'as'=> 'user.'
+], function () {
+    Route::get('/edit', 'ProfileController@edit')->name('edit');
+    Route::match(['get','post'], '/update', 'ProfileController@update')->name('update');
+
+});
+
+
+
+Route::get('/', 'HomeController@index',['middleware' => ['auth']])->name('Home');
 
 
 

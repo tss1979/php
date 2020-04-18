@@ -11,7 +11,7 @@ class NewsController extends Controller
 {
     protected function index()
     {
-        return view('news.index',['newsAll' => News::query()->paginate(3)]);
+        return view('news.index',['newsAll' => News::query()->orderByDesc('created_at')->paginate(3)]);
     }
 
     protected function show($id)

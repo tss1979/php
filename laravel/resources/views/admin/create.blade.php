@@ -18,14 +18,14 @@
                         @if ($news->id) Изменить новость@else Добавить новость @endif
                     </div>
                      <div class="card-body">
-                        <form enctype="multipart/form-data" method="POST" action="@if (!$news->id){{ route('admin.create') }}@else{{ route('admin.update', $news) }}@endif">
+                        <form enctype="multipart/form-data" method="POST" action="{{ route('admin.store', $news) }}">
                             @csrf
 
                             <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">Заголовок новости</label>
                                 <div class="col-md-6">
                                     <input class="@if ($errors->has('title')) is-invalid @else is-valid @endif"
-                                           id="title" type="text" name="title" value="{{ $news->title ?? old('title') }}">
+                                           id="title" type="text" name="title" value="{{ old('title') ?? $news->title }}">
                                 </div>
                                     @if ($errors->has('title'))
                                         <div class="col-md-6 offset-md-4" >
@@ -63,9 +63,8 @@
                             <div class="form-group row">
                                 <label for="text" class="col-md-4 col-form-label text-md-right">Текст новости</label>
                                     <div class="col-md-6">
-                                     <textarea id="text" class="form-control @if ($errors->has('text')) is-invalid @else is-valid @endif" rows="3" name="text">
-                                         {{ $news->text ?? old('text') }}
-                                     </textarea>
+                                        <textarea name="text" class="form-control @if ($errors->has('text')) is-invalid @else is-valid @endif "rows="5"
+                                                  id="text">{{ old('text') ?? $news->text   }}</textarea>
                                     </div>
                                 @if ($errors->has('text'))
                                     <div class="col-md-6 offset-md-4" >

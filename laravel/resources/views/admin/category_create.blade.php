@@ -15,7 +15,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        @if ($category->id) Изменить категорию@else Добавить категорию@endif
+                        @if ($category->id) Изменить категорию@elseДобавить категорию@endif
                     </div>
                     <div class="card-body">
                         <form enctype="multipart/form-data" method="POST" action="{{ route('admin.category.change', $category) }}">
@@ -42,7 +42,7 @@
                             <div class="form-group row">
                                 <label for="slug" class="col-md-4 col-form-label text-md-right">Псевдоним категории</label>
                                 <div class="col-md-6">
-                                     <input type="text" id="slug" class="form-control @if ($errors->has('slug')) is-invalid @else is-valid @endif "
+                                     <input type="text" id="slug" class="form-control @if ($errors->has('slug')) is-invalid @else is-valid @endif"
                                             name="slug" value="{{ $category->slug ?? old('slug') }}">
                                     @if ($errors->has('slug'))
                                         <div class="col-md-12" >
