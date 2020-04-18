@@ -41,7 +41,7 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/admin/category/create')
-                ->type('name', )
+                ->type('name', 'ghhjgk')
                 ->type('slug', 'лучшая новость')
                 ->press('add_category')
                 ->assertPathIs('/admin/index')

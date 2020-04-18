@@ -18,24 +18,29 @@ class NewsController extends Controller
 {
     public function index() {
         $news = News::query()
+            ->orderByDesc('created_at')
             ->paginate(3);
 
         return view('admin.index', ['newsAll' => $news]);
     }
 
-    
-    protected function create(Request $request)
+    public function create()
     {
         $news = new News();
+        return view('admin.create', [
+            'news' => $news,
+            'categories' => Category::query()->select(['id', 'name'])->get()
+        ]);
 
-        if($request->isMethod('post'))
-        {
+    }
+    protected function store(Request $request, News $news)
+    {
+
             $url = null;
 
             $data = $this->validate($request, News::rules(),[], News::attributeNames());
             
             $news->fill($data);
-
 
             if($request->file('image')){
                 $path = Storage::putFile('public/images', $request->file('image'));
@@ -52,36 +57,15 @@ class NewsController extends Controller
                 $request ->flash();
                 return redirect()->route('admin.create');
             }
-
-        }
-
-        return view('admin.create', [
-            'categories' => Category::query()->select(['id', 'name'])->get(),
-            'news' => $news
-        ]);
     }
 
-    public function edit(Request $request, News $news) {
+    public function edit( News $news) {
         return view('admin.create', [
             'news' => $news,
             'categories' => Category::query()->select(['id', 'name'])->get()
         ]);
     }
 
-    public function update(Request $request, News $news)
-    {
-        if ($request->isMethod('post')) {
-
-            if ($request->file('image')) {
-                $path = Storage::putFile('public', $request->file('image'));
-                $url = Storage::url($path);
-                $news->image = $url;
-            }
-            $news->fill($request->all());
-            $news->save();
-            return redirect()->route('admin.index');
-        }
-    }
 
     public function destroy(News $news)
     {
