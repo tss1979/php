@@ -11,6 +11,7 @@ class NewsController extends Controller
 {
     protected function index()
     {
+
         return view('news.index',['newsAll' => News::query()->orderByDesc('created_at')->paginate(3)]);
     }
 
@@ -31,9 +32,11 @@ class NewsController extends Controller
 
     protected function showNewsByCategory($category_name)
     {
-        $category = Category::query()->where('slug', $category_name)->get();
-        $news = News::query()->where('category_id', $category[0]->id)->paginate(3);
-        //$news = $category->news()->get();
+
+        $category = Category::query()->where('slug', $category_name)->firstOrFail();
+        $news = Category::query()->find($category->id)->news()->paginate(3);
+        //$category = Category::query()->where('slug', $category_name)->get();
+        //$news = News::query()->where('category_id', $category[0]->id)->paginate(3);
         return view('news.index', ['newsAll' => $news]);
        // return view('news.index')->with('newsAll', $category->news());
     }

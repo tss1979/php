@@ -17,9 +17,11 @@ Route::group([
     'middleware' => ['auth', 'is_admin']
 ], function () {
     Route::get('/', 'NewsController@index')->name('index');
+    Route::get('/paser', 'ParserController@index')->name('parser');
     Route::match(['get', 'post'],'/create', 'NewsController@create')->name('create');
     Route::get('/edit/{news}', 'NewsController@edit')->name('edit');
-    Route::post('/store/{news}', 'NewsController@store')->name('store');
+    Route::post('/update/{news}', 'NewsController@update')->name('update');
+    Route::post('/store', 'NewsController@store')->name('store');
     Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
     Route::group([
         'as'=> 'profile.'
@@ -66,9 +68,13 @@ Route::group([
 
 
 
-Route::get('/', 'HomeController@index',['middleware' => ['auth']])->name('Home');
+Route::get('/', 'HomeController@index')->name('Home');
 
+Route::get('/auth/vk', 'LoginController@loginVK')->name('vkLogin');
+Route::get('/auth/vk/response', 'LoginController@responseVK')->name('vkResponse');
 
+Route::get('/auth/gh', 'LoginController@loginGH')->name('ghLogin');
+Route::get('/auth/gh/response', 'LoginController@responseGH')->name('ghResponse');
 
 Auth::routes();
 

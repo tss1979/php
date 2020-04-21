@@ -24,16 +24,51 @@ class NewsController extends Controller
         return view('admin.index', ['newsAll' => $news]);
     }
 
-    public function create()
+    public function create(News $news)
     {
-        $news = new News();
+        return view('admin.create', [
+            'categories' => Category::query()->select(['id', 'name'])->get(),
+            'news' => $news
+        ]);
+    }
+
+    public function edit( News $news) {
         return view('admin.create', [
             'news' => $news,
             'categories' => Category::query()->select(['id', 'name'])->get()
         ]);
+    }
+
+    public function update(Request $request, News $news)
+    {
+        $result = $this->saveData($request, $news);
+        if($result)
+        {
+            return redirect()->route('admin.index');
+        } else {
+            $request ->flash();
+            return redirect()->route('admin.create');
+        }
 
     }
-    protected function store(Request $request, News $news)
+
+    public function store(Request $request)
+    {
+        $news = new News();
+
+        $result = $this->saveData($request, $news);
+
+        if($result)
+        {
+            return redirect()->route('admin.index');
+        } else {
+            $request ->flash();
+            return redirect()->route('admin.create');
+        }
+
+    }
+
+    protected function saveData(Request $request, News $news)
     {
 
             $url = null;
@@ -48,22 +83,9 @@ class NewsController extends Controller
                 $news->image = $url;
             }
 
-            $result = $news->save();
 
-            if($result)
-            {
-                return redirect()->route('admin.index');
-            } else {
-                $request ->flash();
-                return redirect()->route('admin.create');
-            }
-    }
+            return $news->save();
 
-    public function edit( News $news) {
-        return view('admin.create', [
-            'news' => $news,
-            'categories' => Category::query()->select(['id', 'name'])->get()
-        ]);
     }
 
 

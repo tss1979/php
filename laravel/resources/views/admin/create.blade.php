@@ -18,7 +18,8 @@
                         @if ($news->id) Изменить новость@else Добавить новость @endif
                     </div>
                      <div class="card-body">
-                        <form enctype="multipart/form-data" method="POST" action="{{ route('admin.store', $news) }}">
+                        <form enctype="multipart/form-data" method="POST"
+                        action="@if (!$news->id){{ route('admin.store') }}@else{{ route('admin.update', $news) }}@endif">
                             @csrf
 
                             <div class="form-group row">
@@ -42,10 +43,11 @@
                                 <label for="newsCategory" class="col-md-4 col-form-label text-md-right">Категория новости</label>
                                 <div class="col-md-6">
                                     <select id="newsCategory" class="form-control @if ($errors->has('category_id')) is-invalid @else is-valid @endif" name="category_id">
-                                        @forelse($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @forelse($categories as $item)
+                                            <option @if ($item->id == old('category_id') ?? $item->id == $news->category_id) selected
+                                                    @endif value="{{ $item->id }}">{{ $item->name }}</option>
                                         @empty
-                                            <h2>Нет категорий</h2>
+                                            <h2>Нет категории</h2>
                                         @endforelse
                                     </select>
                                     @if ($errors->has('category_id'))
@@ -64,7 +66,7 @@
                                 <label for="text" class="col-md-4 col-form-label text-md-right">Текст новости</label>
                                     <div class="col-md-6">
                                         <textarea name="text" class="form-control @if ($errors->has('text')) is-invalid @else is-valid @endif "rows="5"
-                                                  id="text">{{ old('text') ?? $news->text   }}</textarea>
+                                                  id="text">@if ($news->id) {{ old('text') }} @else {{ old('text') ?? $news->text ?? "" }}@endif</textarea>
                                     </div>
                                 @if ($errors->has('text'))
                                     <div class="col-md-6 offset-md-4" >
