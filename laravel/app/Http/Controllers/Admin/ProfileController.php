@@ -52,12 +52,7 @@ class ProfileController extends Controller
 
     public function change_admin_status(User $user)
     {
-        if($user->is_admin)
-        {
-            $user->is_admin = false;
-        } else {
-            $user->is_admin = true;
-        }
+        $user->is_admin = !$user->is_admin;
 
         $user->save();
 

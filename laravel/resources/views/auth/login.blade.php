@@ -57,6 +57,7 @@
                                     {{ __('Login') }}
                                 </button>
 
+
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
@@ -65,6 +66,12 @@
                             </div>
                         </div>
                     </form>
+                    <hr>
+                    <div>
+                    <p>Авторизация через соц сети</p>
+                    <a href="{{ route('vkLogin') }}"><i class="fab fa-vk"></i></a>
+                    <a href="{{ route('ghLogin') }}"><i class="fab fa-github"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

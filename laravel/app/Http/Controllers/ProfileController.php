@@ -16,15 +16,13 @@ class ProfileController extends Controller
 
         $errors = [];
         if ($request->isMethod('post')) {
+            $this->validate($request, User::rules(), [], User::attributeNames());
             if (Hash::check($request->post('password'), $user->password)) {
                 $user->fill([
                     'name' => $request->post('name'),
                     'password' => Hash::make($request->post('newPassword')),
                     'email' => $request->post('email')
                 ]);
-
-                $this->validate($request, User::rules(), [], User::attributeNames());
-
 
                 $user->save();
 
