@@ -12,6 +12,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div>
+                    @foreach($categories as $category)
+                        <a class="cat-text" href ="{{ route('news.category.show', $category->slug) }}">
+                            <button class="btn btn-info">{{ $category->name }}</button></a>
+                    @endforeach
+                </div>
                 <div class="card">
                      @forelse($newsAll as $news)
                          <h4>{{ $news->title }}</h4>

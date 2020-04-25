@@ -24,6 +24,14 @@ Route::group([
     Route::post('/store', 'NewsController@store')->name('store');
     Route::get('/destroy/{news}', 'NewsController@destroy')->name('destroy');
     Route::group([
+        'as'=> 'resource.'
+    ], function () {
+        Route::get('/resource', 'resourceController@index')->name('index');
+        Route::match(['get', 'post'],'/resource/create', 'ResourceController@create')->name('create');
+        Route::post('/resource', 'ResourceController@saveData')->name('saveData');
+        Route::get('/resource/destroy/{resource}', 'ResourceController@destroy')->name('destroy');
+    });
+    Route::group([
         'as'=> 'profile.'
     ], function () {
         Route::get('/users', 'ProfileController@index')->name('index');

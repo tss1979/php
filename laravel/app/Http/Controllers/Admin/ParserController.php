@@ -6,40 +6,21 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\News;
 use App\Http\Controllers\Controller;
+use App\Resource;
 use Orchestra\Parser\Xml\Facade as XmlParser;
+use App\Services\XMLParserService;
+use App\Jobs\NewsParsing;
 
 class ParserController extends Controller
 {
-    public function index() {
-        $xml = XmlParser::load('https://news.yandex.ru/army.rss');
-        $data = $xml->parse([
-            'title' => ['uses' => 'channel.title'],
-            'link' => ['uses' => 'channel.link'],
-            'description' => ['uses' => 'channel.description'],
-            'image' => ['uses' => 'channel.image.url'],
-            'news' => ['uses' => 'channel.item[title,link,guid,description,pubDate]']
-        ]);
-        
-        if (is_null(Category::query()->where('name', $data['title'])))
+    public function index()
+    {
+        $rsslink = Resource::query()->get();
+
+        foreach($rsslink as $link)
         {
-             $category = new Category();
-             $category->name = $data['title'];
-             $category->slug = 'army';
-             $category->category_image = $data['image'];
-             $category->save();
-         }
-
-        
-        foreach ($data['news'] as $item) {
-            if (is_null(News::query()->where('title', $item['title']))) {
-                $news = new News();
-                $news->title = $item['title'];
-                $news->text = $item['description'];
-                $news->category_id = (Category::query()->where('name', $data['title'])->firstOrFail())->id;
-                $news->save();
-            }
+                NewsParsing::dispatch($link);
         }
-        return redirect()->route('admin.index');
-    }
 
+    }
 }
