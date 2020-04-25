@@ -66,7 +66,7 @@
                                 <label for="text" class="col-md-4 col-form-label text-md-right">Текст новости</label>
                                     <div class="col-md-6">
                                         <textarea name="text" class="form-control @if ($errors->has('text')) is-invalid @else is-valid @endif "rows="5"
-                                                  id="text">@if ($news->id) {{ old('text') }} @else {{ old('text') ?? $news->text ?? "" }}@endif</textarea>
+                                                  id="my-editor">{!! empty(old()) ? $news->text : old('text') !!}</textarea>
                                     </div>
                                 @if ($errors->has('text'))
                                     <div class="col-md-6 offset-md-4" >
@@ -123,5 +123,16 @@
                                 @if($news->id)Изменить@elseДобавить@endif
                             </button>
                         </form>
-
+                         <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+                         <script>
+                             var options = {
+                                 filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+                                 filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+                                 filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+                                 filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+                             };
+                         </script>
+                         <script>
+                             CKEDITOR.replace('my-editor', options);
+                         </script>
 @endsection

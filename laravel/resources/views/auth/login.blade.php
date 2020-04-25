@@ -69,7 +69,6 @@
                     <hr>
                     <div>
                     <p>Авторизация через соц сети</p>
-                    <a href="{{ route('vkLogin') }}"><i class="fab fa-vk"></i></a>
                     <a href="{{ route('ghLogin') }}"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
